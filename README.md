@@ -1,4 +1,4 @@
-# slack-relay-lambda
+# es-purge-lambda
 
 Lambda script written in TypeScript that cleans up old indices from AWS ES
 
