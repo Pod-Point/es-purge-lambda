@@ -10,7 +10,7 @@
     "tsc": "tsc --noEmit --pretty",
     "deploy": "serverless deploy --stage production"
   },
-  "license": "proprietary",
+  "license": "MIT",
   "devDependencies": {
     "@pod-point/tslint-config-podpoint-base": "^1.0.0",
     "@types/aws-lambda": "0.0.24",
