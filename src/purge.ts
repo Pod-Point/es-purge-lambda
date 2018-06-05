@@ -23,13 +23,23 @@ export async function handler(event: SNSEvent, context: Context, callback: Callb
         index: `${process.env.INDEX_PREFIX}*`,
     });
 
+    const indices: string[] = [];
+
     results.forEach((result: IndexData) => {
         const indexDate: string = moment(result.index.slice(process.env.INDEX_PREFIX.length)).format('YYYY-MM-DD');
 
         if (indexDate < purgeDate) {
             console.log(`Deleting: ${process.env.INDEX_PREFIX}${indexDate}`);
+
+            indices.push(`${process.env.INDEX_PREFIX}${indexDate}`);
         }
     });
+
+    if (indices.length > 0) {
+        client.indices.delete({
+            index: indices,
+        });
+    }
 
     callback();
 }
