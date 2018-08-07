@@ -8,3 +8,5 @@ jspm_packages
 .env.yml
 /coverage
 npm-debug.log
+
+./config.yml

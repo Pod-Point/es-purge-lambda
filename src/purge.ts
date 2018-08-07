@@ -2,6 +2,9 @@ import { Context, SNSEvent, Callback } from 'aws-lambda';
 import { Client } from 'elasticsearch';
 import * as moment from 'moment';
 import * as HttpAmazonESConnector from 'http-aws-es';
+import * as yaml from 'js-yaml';
+import * as fs from 'fs';
+import * as path from 'path';
 
 /**
  * Purge old ES indices.
@@ -9,29 +12,49 @@ import * as HttpAmazonESConnector from 'http-aws-es';
  * @param {SNSEvent} event
  * @param {Context} context
  * @param {Callback} callback
+ * @returns {Promise}
  */
 export async function handler(event: SNSEvent, context: Context, callback: Callback): Promise<void> {
+    const data: ConfigFile = yaml.safeLoad(fs.readFileSync(path.resolve('../../config.yml'), 'utf8'));
+
+    data.config.forEach((definition: ClusterDefinition) => {
+        deleteIndices(definition.endpoint, definition.prefix, definition.days, definition.format);
+    });
+
+    callback();
+}
+
+/**
+ * Delete old indices from an ES cluster.
+ *
+ * @param {string} endpoint
+ * @param {string} prefix
+ * @param {number} days
+ * @param {string} format
+ * @returns {Promise}
+ */
+async function deleteIndices(endpoint: string, prefix: string, days: number, format: string): Promise<void> {
     const client = new Client({
-        host: [process.env.ES_ENDPOINT],
+        host: [endpoint],
         connectionClass: HttpAmazonESConnector,
     });
 
-    const purgeDate: string = moment().subtract(process.env.DAYS_TO_KEEP, 'd').format(process.env.DATE_FORMAT);
+    const purgeDate: string = moment().subtract(days, 'd').format(format);
 
     const results: IndexData[] = await client.cat.indices({
         format: 'json',
-        index: `${process.env.INDEX_PREFIX}*`,
+        index: `${prefix}*`,
     });
 
     const indices: string[] = [];
 
-    results.forEach((result: IndexData) => {
-        const indexDate: string = moment(result.index.slice(process.env.INDEX_PREFIX.length)).format('YYYY-MM-DD');
+    results.sort((a: IndexData, b: IndexData) => a.index.localeCompare(b.index)).forEach((result: IndexData) => {
+        const indexDate: string = moment(result.index.slice(prefix.length)).format(format);
 
         if (indexDate < purgeDate) {
-            console.log(`Deleting: ${process.env.INDEX_PREFIX}${indexDate}`);
+            console.log(`Deleting: ${prefix}${indexDate}`);
 
-            indices.push(`${process.env.INDEX_PREFIX}${indexDate}`);
+            indices.push(`${prefix}${indexDate}`);
         }
     });
 
@@ -40,10 +63,19 @@ export async function handler(event: SNSEvent, context: Context, callback: Callb
             index: indices,
         });
     }
-
-    callback();
 }
 
 interface IndexData {
     index: string;
+}
+
+interface ConfigFile {
+    config: ClusterDefinition[];
+}
+
+interface ClusterDefinition {
+    endpoint: string;
+    prefix: string;
+    days: number;
+    format: string;
 }

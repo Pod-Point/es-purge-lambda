@@ -8,12 +8,15 @@ Lambda script written in TypeScript that cleans up old indices from AWS ES
 
 ### Config
 
-Edit your `.env.yml`. For example:
+Edit your `.env.yml` to set AWS environment details and also copy `config.example.yml` to `config.yml`
+to define the clusters to purge.
 
 ```env
-INDEX_PREFIX: logstash-
-DAYS_TO_KEEP: 30
-DATE_FORMAT: YYYY-MM-DD
+config:
+  - endpoint: https://search-domain-dhuid78.region.es.amazonaws.com/
+    prefix: logstash-
+    days: 30
+    format: YYYY-MM-DD
 ```
 
 ### Deploy

@@ -1,0 +1,5 @@
+config:
+  - endpoint: https://search-domain-dhuid78.region.es.amazonaws.com/
+    prefix: logstash-
+    days: 30
+    format: YYYY-MM-DD

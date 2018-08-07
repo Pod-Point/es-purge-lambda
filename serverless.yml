@@ -11,15 +11,11 @@ provider:
       - ${env:APP_VPC_SECURITY_GROUP, file(./.env.yml):APP_VPC_SECURITY_GROUP}
     subnetIds:
       - ${env:APP_VPC_SUBNET, file(./.env.yml):APP_VPC_SUBNET}
-  environment:
-    ES_ENDPOINT: ${env:ES_ENDPOINT, file(./.env.yml):ES_ENDPOINT}
-    INDEX_PREFIX: ${env:INDEX_PREFIX, file(./.env.yml):INDEX_PREFIX}
-    DAYS_TO_KEEP: ${env:DAYS_TO_KEEP, file(./.env.yml):DAYS_TO_KEEP}
   iamRoleStatements:
     - Effect: "Allow"
       Action:
-        - "es:*"
-      Resource: ${env:ES_ARN, file(./.env.yml):ES_ARN}
+        - "es:ESHttpDelete"
+      Resource: arn:aws:es:${self:provider.region}:*:domain/*
 functions:
   purge:
     handler: src/purge.handler

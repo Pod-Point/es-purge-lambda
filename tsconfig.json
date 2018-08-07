@@ -1,6 +1,7 @@
 {
+  "extends": "./node_modules/@pod-point/tsconfig-podpoint-base/tsconfig.json",
   "compilerOptions": {
-    "noImplicitAny": true,
+    "strictNullChecks": false,
     "sourceMap": true,
     "lib": [
       "es5",
