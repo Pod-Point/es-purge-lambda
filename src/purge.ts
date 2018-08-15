@@ -15,7 +15,7 @@ import * as path from 'path';
  * @returns {Promise}
  */
 export async function handler(event: SNSEvent, context: Context, callback: Callback): Promise<void> {
-    const data: ConfigFile = yaml.safeLoad(fs.readFileSync(path.resolve('../../config.yml'), 'utf8'));
+    const data: ConfigFile = yaml.safeLoad(fs.readFileSync(path.resolve('./config.yml'), 'utf8'));
 
     data.config.forEach((definition: ClusterDefinition) => {
         deleteIndices(definition.endpoint, definition.prefix, definition.days, definition.format);
