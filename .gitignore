@@ -9,4 +9,4 @@ jspm_packages
 /coverage
 npm-debug.log
 
-./config.yml
+config.yml
