@@ -10,3 +10,4 @@ jspm_packages
 npm-debug.log
 
 config.yml
+.idea
