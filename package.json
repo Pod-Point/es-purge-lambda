@@ -8,7 +8,8 @@
   "scripts": {
     "lint": "tslint -c tslint.json 'src/**/*.{ts,tsx}'",
     "tsc": "tsc --noEmit --pretty",
-    "deploy": "serverless deploy --stage production",
+    "deploy:production": "serverless deploy --stage production",
+    "deploy:staging": "serverless deploy --stage staging",
     "invoke": "serverless invoke local -f purge"
   },
   "license": "MIT",
@@ -21,10 +22,11 @@
     "@types/js-yaml": "^3.11.2",
     "@types/node": "^8.5.2",
     "copy-webpack-plugin": "^4.5.2",
-    "serverless-webpack": "^4.2.0",
+    "serverless": "^3.35.2",
+    "serverless-webpack": "^5.13.0",
     "ts-loader": "^3.2.0",
     "tslint": "^5.8.0",
-    "typescript": "^2.6.2",
+    "typescript": "^5.2.2",
     "webpack": "^3.10.0"
   },
   "dependencies": {

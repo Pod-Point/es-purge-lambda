@@ -1,10 +1,9 @@
 service: es-purge
 provider:
   name: aws
-  defaultStage: staging
-  stage: ${env:STAGE, self:provider.defaultStage, opt:stage}
+  stage: ${opt:stage}
   role: ${env:AWS_ROLE, file(./.env.yml):AWS_ROLE}
-  runtime: nodejs8.10
+  runtime: nodejs18.x
   region: ${env:APP_AWS_REGION, file(./.env.yml):APP_AWS_REGION}
   vpc:
     securityGroupIds:
