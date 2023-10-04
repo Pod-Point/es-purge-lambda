@@ -47,7 +47,6 @@ config:
 Make sure to populate your `.env.yml` file with the correct values. You can find out the correct values by inspecting the lambda function in AWS and noting down its execution role, region, as well as VPC security group and subnet -- and of course the stage you want to deploy this to. The current configuration looks like this:
 
 ```yml
-STAGE: staging
 AWS_ROLE: arn:aws:iam::959744386191:role/lambda_basic_execution
 APP_AWS_REGION: eu-west-1
 APP_VPC_SECURITY_GROUP: sg-4cd7922b
