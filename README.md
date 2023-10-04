@@ -44,7 +44,7 @@ config:
 
 ### Deploy
 
-Make sure to populate your `.env.yml` file with the correct values. You can find out the correct values by inspecting the lambda function in AWS and nothing down its execution role, region, as well as VPC security group and subnet -- and of course the stage you want to deploy this to. The current configuration looks like this:
+Make sure to populate your `.env.yml` file with the correct values. You can find out the correct values by inspecting the lambda function in AWS and noting down its execution role, region, as well as VPC security group and subnet -- and of course the stage you want to deploy this to. The current configuration looks like this:
 
 ```yml
 STAGE: staging
